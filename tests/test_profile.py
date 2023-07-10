@@ -5,13 +5,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from locators import TestLocators
 
 
-class TestLoginRegistration:
+class TestsProfile:
 
-    def test_constructor_from_profile_successful_redirect(self, user_data):
+    def test_constructor_from_profile_successful_redirect(self, driver, user_data):
         # тест переход из личного кабинета в конструктор по клику на "Конструктор"
         # входим в личный кабинет. После клика на "Конструктор" успешно переходим на страницу, есть 'бургер' в заголовке
-        driver = webdriver.Chrome()
-        driver.get("https://stellarburgers.nomoreparties.site/")
 
         driver.find_element(*TestLocators.Main_Login_Button).click()
 
@@ -29,13 +27,9 @@ class TestLoginRegistration:
         WebDriverWait(driver, 5).until(expected_conditions.presence_of_element_located(TestLocators.Burger_Constructor))
         assert 'бургер' in driver.find_element(*TestLocators.Burger_Constructor).text
 
-        driver.quit()
-
-    def test_stellar_from_profile_successful_redirect(self, user_data):
+    def test_stellar_from_profile_successful_redirect(self,driver ,user_data):
         # тест перехода из личного кабинета в конструктор по клику на логотип Stellar Burgers
         # входим в личный кабинет. После клика на "Stellar Burgers" успешно переходим на страницу конструктора
-        driver = webdriver.Chrome()
-        driver.get("https://stellarburgers.nomoreparties.site/")
 
         driver.find_element(*TestLocators.Profile_Button).click()
 
@@ -52,15 +46,11 @@ class TestLoginRegistration:
         driver.find_element(*TestLocators.Stellar_Logo).click()
 
         WebDriverWait(driver, 5).until(expected_conditions.presence_of_element_located(TestLocators.New_Order_Button))
-        assert driver.current_url == "https://stellarburgers.nomoreparties.site/"
+        assert 'Оформить заказ' in driver.find_element(*TestLocators.New_Order_Button).text
 
-        driver.quit()
-
-    def test_logout_profile_exit(self, user_data):
+    def test_logout_profile_exit(self, driver, user_data):
         # тест выхода из личного кабинета
         # входим в личный кабинет. После нажатия кнопки "Выход" выполняется перенаправление на страницу входа
-        driver = webdriver.Chrome()
-        driver.get("https://stellarburgers.nomoreparties.site/")
 
         driver.find_element(*TestLocators.Profile_Button).click()
 
@@ -76,5 +66,5 @@ class TestLoginRegistration:
         WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located(TestLocators.Profile_Exit))
         driver.find_element(*TestLocators.Profile_Exit).click()
 
-        WebDriverWait(driver, 5).until(expected_conditions.presence_of_element_located(TestLocators.Registration_Email))
-        assert driver.current_url == "https://stellarburgers.nomoreparties.site/login"
+        assert WebDriverWait(driver, 5).until(expected_conditions.visibility_of_element_located(
+            TestLocators.Confirm_Login_Button)).text == "Войти"

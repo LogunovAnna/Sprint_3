@@ -1,5 +1,17 @@
 import pytest
 import random
+from selenium import webdriver
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
+
+
+@pytest.fixture()
+def driver():
+    driver = webdriver.Chrome()
+    driver.get("https://stellarburgers.nomoreparties.site/")
+
+    yield driver
+    driver.quit()
 
 
 @pytest.fixture(scope="function")
